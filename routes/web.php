@@ -1,17 +1,18 @@
 <?php
 
+use App\Http\Controllers\{
+    AcademicYearController,
+    DashboardController
+};
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
 
-Route::middleware([
-    'auth:sanctum',
-    config('jetstream.auth_session'),
-    'verified',
-])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
+Route::group(['middleware' => 'auth'], function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+    Route::get('/academic-years/data', [AcademicYearController::class, 'data'])->name('academic-years.data');
+    Route::resource('academic-years', AcademicYearController::class)->except('create', 'edit');
 });
