@@ -16,36 +16,54 @@ function preview(target, image) {
 }
 
 function resetForm(selector) {
+    // Reset form fields
     $(selector)[0].reset();
 
+    // Clear Summernote content
     if ($(selector).find(".summernote").length !== 0) {
         $(selector).find(".summernote").summernote("code", "");
     }
 
+    // Reset image thumbnail and custom file input
     if ($(selector).find(".img-thumbnail").length !== 0) {
         $(selector).find(".img-thumbnail").attr("src", "").hide();
         $(selector).find(".custom-file-label").text("Choose file");
     }
 
+    // Reset select2 elements
     if ($(selector).find(".select2").length !== 0) {
         $(selector).find(".select2").val(null).trigger("change");
     }
 
+    // Reset dual listbox
     if ($(selector).find(".duallistbox").length !== 0) {
         $(selector).find(".duallistbox").empty();
         $(selector).find(".duallistbox").bootstrapDualListbox("refresh");
     }
 
+    // Reset custom file inputs
     $(".custom-file-input").next(".custom-file-label").text("Choose file");
     $(".custom-file-input").val("");
 
+    // Reset select2 elements globally
     $(".select2").trigger("change");
     $(".select2").val("").trigger("change");
 
+    // Remove invalid feedback and form-control errors
     $(
         ".form-control, .custom-select, [type=radio], [type=checkbox], [type=file], .select2, .note-editor"
     ).removeClass("is-invalid");
     $(".invalid-feedback").remove();
+
+    // Reset datetimepicker elements and hide
+    if ($(selector).find(".datetimepicker").length !== 0) {
+        $(selector)
+            .find(".datetimepicker")
+            .each(function () {
+                $(this).datetimepicker("hide"); // Menutup datetimepicker
+                $(this).datetimepicker("date", null); // Menghapus tanggal yang dipilih
+            });
+    }
 }
 
 function loopForm1(originalForm) {
